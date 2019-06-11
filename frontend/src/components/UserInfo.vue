@@ -4,6 +4,9 @@
       <h1>User ID {{user.name}}</h1>
       <h2>MAC {{user.mac}}</h2>
       <p>{{user.bio}}</p>
+      <div>
+        <label>Oi</label><input type="text" name="text">
+      </div>
     </div>
     <div class="user-stats">
       <chartjs-line class="user-chart" :labels="labels" :datasets="dataset" :bind="true" :option="graphOpt"></chartjs-line>

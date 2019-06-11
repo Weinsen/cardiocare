@@ -164,20 +164,6 @@
   100% {background-color: #ff1514;}
 }
 
-.user-list {
-  color: #101080;
-  border-top: 1px black solid;
-  padding: 1em;
-  text-decoration: none;
-  font-weight: bold;
-  color: black;
-}
-
-.user-list a {
-  color: black;
-  text-decoration: none;
-}
-
 h1 {
   margin: 0;
   margin-block: 0;

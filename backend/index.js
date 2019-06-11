@@ -82,11 +82,11 @@ app.get('/getUser/:id', function(req, res) {
 });
 
 app.get('/getImage/:id', function(req, res) {
-	console.log('public/' + req.params.id + '.jpg');
+	console.log('public/' + req.params.id);
 	var file = path.join(__dirname, 'public/' + req.params.id);
 	var s = fs.createReadStream(file);
     s.on('open', function () {
-        res.set('Content-Type', 'image/jpg');
+        res.set('Content-Type', 'image/png');
         s.pipe(res);
     });
     s.on('error', function () {

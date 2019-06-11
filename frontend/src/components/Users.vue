@@ -47,3 +47,40 @@ export default {
   }
 }
 </script>
+
+<style>
+
+  .user-list {
+    color: #101080;
+    border-top: 1px black solid;
+    padding: 1em;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+  }
+
+  .user-list a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .user-list:hover {
+    animation-name: users-list-anim;
+    animation-fill-mode: forwards;
+    animation-duration: 0.5s;
+  }
+
+  .user-list:nth-child(2n) {
+    background-color: #F4F4FF;
+  }
+
+  @keyframes users-list-anim {
+  0%   {
+    background-color: none;
+  }
+  100% {
+    background-color: rgba(255, 21, 20, 0.2);
+  }
+}
+
+</style>

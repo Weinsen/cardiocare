@@ -79,5 +79,6 @@ export default {
   flex: 1;
   max-height: 75vh;
   flex-direction: column;
+  word-wrap: break-word;
 }
 </style>

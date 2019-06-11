@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       title: 'Perfil de Usuário',
-      image: baseURL + '/getImage/logo.jpg'
+      image: baseURL + '/getImage/user.png'
     }
   }
 }

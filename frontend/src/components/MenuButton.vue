@@ -4,7 +4,7 @@
       {{label}}
     </div>
     <div style="flex:1; display: flex; vertical-align: middle; justify-content: center; align-content: center;">
-      <img v-bind:src="require('@/assets/'+icon+'.svg')" style="width: 63%; height: 100%">
+      <img v-bind:src="require('@/assets/'+icon+'.svg')" style="width: 50%; height: 100%">
     </div>
   </div>
 </template>
