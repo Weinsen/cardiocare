@@ -3,14 +3,14 @@
     <NavBar :title="title" :imgLink="image"></NavBar>
     <div id="dash" style="display: flex; flex-direction: column;">
       <div id="chat-box" ref="chatlog">
-        <div v-for="m in messages" :key="m">{{m}}</div>
+        <div v-for="(m, index) in messages" :key="index">{{m}}</div>
       </div>
       <form @submit.prevent="checkForm">
         <table style="border: 1px black solid; width: 100%">
           <tr style="width: 100%; display: flex; ">
             <!-- <td><label>Mensagem</label></td> -->
-            <td style="flex: 1; flex-grow: 1; flex-direction: row"><input type="text" v-model="message" ref="input" style="width: 100%" ></td>
-            <td><button type="submit">Submit</button></td>
+            <td style="flex: 1; flex-grow: 1; flex-direction: row; display: flex;"><input type="text" v-model="message" ref="input"></td>
+            <td style="display: flex; align-items: center"><button type="submit">Submit</button></td>
           </tr>
         </table>
       </form>
@@ -32,7 +32,7 @@ export default {
       title: 'Chat',
       image: null,
       messages: [],
-      message: '',
+      message: null,
       errors: []
     }
   },
@@ -68,17 +68,35 @@ export default {
 }
 </script>
 
-<style>
-#chat-box {
-  height: 50vh;
-  overflow: auto;
-  width: 100%;
-  background-color: rgba(255,255,255,0.8);
-  overflow: auto;
-  flex-grow: 1;
-  flex: 1;
-  max-height: 75vh;
-  flex-direction: column;
-  word-wrap: break-word;
-}
+<style scoped>
+
+  #chat-box {
+    height: 50vh;
+    overflow: auto;
+    width: 100%;
+    background-color: rgba(255,255,255,0.8);
+    overflow: auto;
+    flex-grow: 1;
+    flex: 1;
+    max-height: 75vh;
+    flex-direction: column;
+    word-wrap: break-word;
+  }
+
+  input {
+    padding: 6px;
+    flex: 1;
+
+    flex-grow: 1;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    width: 100%;
+    padding: 8px 4px;
+    border: none;
+    border-radius: 4px;
+  }
+
 </style>

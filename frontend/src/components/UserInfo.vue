@@ -1,11 +1,13 @@
 <template>
   <div class=user-screen>
     <div class="user-bio">
-      <h1>User ID {{user.name}}</h1>
-      <h2>MAC {{user.mac}}</h2>
-      <p>{{user.bio}}</p>
-      <div>
-        <label>Oi</label><input type="text" name="text">
+      <div style="width: 100%; flex-grow: 1; flex-direction: column;">
+        <h1>User ID {{user.name}}</h1>
+        <h2>MAC {{user.mac}}</h2>
+        <p>{{user.bio}}</p>
+      </div>
+      <div style="width: 100%">
+        <button type="submit">Notificar Usuário</button>
       </div>
     </div>
     <div class="user-stats">
@@ -104,3 +106,63 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+  button {
+    margin-top: 10px;
+    background-color: #AF4C50;
+    color: white;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+  }
+
+  .user-bio {
+    box-shadow-right: 10px;
+    min-width: 300px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: flex;
+    vertical-align: middle;
+    text-align: center;
+    flex-direction: column;
+    flex-grow: 2;
+  }
+
+  .user-stats {
+    height: 100%;
+    min-width: 300px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: inline-block;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+
+  .user-chart {
+    margin: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 40vw;
+    min-width: 300px;
+  }
+
+  @media only screen and (max-device-width : 600px) {
+    .user-chart {
+      max-width: 100vw;
+    }
+  }
+
+</style>

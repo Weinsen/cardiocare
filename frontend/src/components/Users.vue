@@ -2,7 +2,7 @@
   <div>
     <NavBar :title="title"></NavBar>
     <div id="dash">
-      <div style="overflow: auto;" v-for="user in users" v-bind:key='user' class="user-list">
+      <div style="overflow: auto;" v-for="(user, index) in users" v-bind:key="index" class="user-list">
         <router-link :to="`/user/${user.id}`" style="display: flex">
           <!-- <div><img v-bind:src="image" id="profile-icon"></div> -->
           <p style="width: 33vw">{{user.name}}</p>

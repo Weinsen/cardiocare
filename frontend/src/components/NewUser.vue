@@ -113,8 +113,6 @@ export default {
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
-    float: right;
   }
 
   @media screen and (max-width: 900px) {

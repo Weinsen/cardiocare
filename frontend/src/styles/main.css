@@ -186,46 +186,6 @@ p {
   flex-wrap: wrap;
 }
 
-.user-bio {
-  box-shadow-right: 10px;
-  min-width: 300px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  flex-direction: row;
-  flex-grow: 2;
-}
-
-.user-stats {
-  height: 100%;
-  min-width: 300px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  display: inline-block;
-  flex-wrap: wrap;
-  vertical-align: middle;
-  text-align: center;
-  flex-direction: row;
-  flex-grow: 1;
-}
-
-.user-chart {
-  margin: 10px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  vertical-align: middle;
-  text-align: center;
-  flex-direction: column;
-  flex-grow: 1;
-  max-width: 40vw;
-  min-width: 300px;
-}
-
 @media only screen and (max-device-width : 750px) {
 
   .main-page-item {
@@ -235,9 +195,6 @@ p {
 }
 
 @media only screen and (max-device-width : 500px) {
-  .user-chart {
-    max-width: 100vw;
-  }
 
   .main-page {
     align-content: flex-start;

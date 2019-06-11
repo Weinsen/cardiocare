@@ -24,7 +24,7 @@ let db = new sqlite3.Database('./db/teste.db', (err) => {
 });
 
 db.serialize(() => {
-  db.run("CREATE TABLE IF NOT EXISTS users (name TEXT UNIQUE, date NUMERIC, mac TEXT UNIQUE, bio TEXT, isactive NUMERIC)");
+  db.run("CREATE TABLE IF NOT EXISTS users (name TEXT UNIQUE NOT NULL, date NUMERIC NOT NULL, mac TEXT UNIQUE NOT NULL, bio TEXT, isactive NUMERIC)");
 
   var datasql = [];
   db.each("SELECT rowid AS id, name, mac FROM users", function(err, row) {

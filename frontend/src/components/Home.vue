@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%">
-    <nav-bar :title="title" :imgLink="image"></nav-bar>
+    <nav-bar :title="title"></nav-bar>
     <div id="dash" class="main-page">
       <router-link to="/newUser"><menu-button :label="'Cadastrar'" :icon="'cross'"></menu-button></router-link>
       <router-link to="/users"><menu-button :label="'Usuários'" :icon="'user'"></menu-button></router-link>
