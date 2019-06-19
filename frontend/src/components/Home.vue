@@ -5,7 +5,7 @@
       <router-link to="/newUser"><menu-button :label="'Cadastrar'" :icon="'cross'"></menu-button></router-link>
       <router-link to="/users"><menu-button :label="'Usuários'" :icon="'user'"></menu-button></router-link>
       <router-link to="/chat"><menu-button :label="'Chat'" :icon="'chat'"></menu-button></router-link>
-      <menu-button :label="'Como?'" :icon="'help'"></menu-button>
+      <router-link to="/slides"><menu-button :label="'Como?'" :icon="'help'"></menu-button></router-link>
     </div>
   </div>
 </template>

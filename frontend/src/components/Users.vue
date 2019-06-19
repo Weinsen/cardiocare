@@ -5,6 +5,7 @@
       <div style="overflow: auto;" v-for="(user, index) in users" v-bind:key="index" class="user-list">
         <router-link :to="`/user/${user.id}`" style="display: flex">
           <!-- <div><img v-bind:src="image" id="profile-icon"></div> -->
+          <p style="width: 10vw; font-weight: bold">{{user.id}}</p>
           <p style="width: 33vw">{{user.name}}</p>
           <p style="margin-left">{{user.mac}}</p>
         </router-link>

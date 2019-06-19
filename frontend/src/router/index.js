@@ -8,6 +8,7 @@ import Chat from '@/components/Chat.vue'
 import UserInfo from '@/components/UserInfo.vue'
 import Chart from '@/components/Chart.vue'
 import NewUser from '@/components/NewUser.vue'
+import Slides from '@/components/Slides.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/chart',
       name: 'Chart',
       component: Chart
+    },
+    {
+      path: '/slides',
+      name: 'Slides',
+      component: Slides
     },
     {
       path: '/users',

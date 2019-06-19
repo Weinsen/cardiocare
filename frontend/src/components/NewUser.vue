@@ -8,6 +8,10 @@
           <input type="text" v-model="user.name">
         </p>
         <p>
+          <label>Email</label>
+          <input type="email" v-model="user.email">
+        </p>
+        <p>
           <label>MAC de Dispositivo</label>
           <input type="text" v-model="user.mac">
         </p>
@@ -41,10 +45,14 @@ export default {
       errors: [],
       user: {
         name: null,
+        email: null,
         mac: null,
         bio: null,
         date: null,
-        profile: null
+        profile: null,
+        limit_corp: 0,
+        limit_diff: 0,
+        limit_freq: 0
       }
     }
   },
@@ -56,10 +64,21 @@ export default {
       }).then(response => {
         console.log(response)
         if (response.status === 200) {
-          this.user.name = ''
-          this.user.bio = ''
-          this.user.date = ''
-          this.user.mac = ''
+          this.user = {}
+          this.$notify({
+            group: 'foo',
+            title: 'Sucesso!',
+            type: 'success',
+            text: 'Usuário criado com sucesso!'
+          })
+        } else {
+          this.user = {}
+          this.$notify({
+            group: 'foo',
+            title: 'Falha!',
+            type: 'error',
+            text: 'Falha durante cadastro de usuário!'
+          })
         }
       })
     }

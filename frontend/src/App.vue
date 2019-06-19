@@ -2,6 +2,10 @@
   <div id="app">
     <!-- <img src="./assets/wifi_heart2.svg"> -->
     <router-view/>
+
+    <notifications group="foo"
+                   position="bottom left"
+                   :speed="500" />
   </div>
 </template>
 
@@ -12,15 +16,17 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-image: './assets/wifi_heart2.svg';
-  text-align: center;
-  background-color: red;
-  color: #FF3e50;
-  height: 100vh;
-  width: 100vw;
-}
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: './assets/wifi_heart2.svg';
+    text-align: center;
+    background-color: red;
+    color: #FF3e50;
+    height: 100vh;
+    width: 100vw;
+  }
+
 </style>

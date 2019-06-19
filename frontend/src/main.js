@@ -3,11 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Notifications from 'vue-notification'
 import './styles/main.css'
 import 'chart.js'
 import 'hchs-vue-charts'
 
 Vue.use(window.VueCharts)
+Vue.use(Notifications)
 
 Vue.config.productionTip = false
 
