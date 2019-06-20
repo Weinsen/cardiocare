@@ -2,12 +2,20 @@
   <div>
     <NavBar :title="title"></NavBar>
     <div id="dash">
+      <div class="user-header">
+        <p style="width: 7vw; font-weight: bold">ID</p>
+        <p style="width: 25vw">Usuário</p>
+        <p style="width: 10vw">MAC</p>
+        <p>Último acesso</p><br>
+      </div>
       <div style="overflow: auto;" v-for="(user, index) in users" v-bind:key="index" class="user-list">
         <router-link :to="`/user/${user.id}`" style="display: flex">
           <!-- <div><img v-bind:src="image" id="profile-icon"></div> -->
-          <p style="width: 10vw; font-weight: bold">{{user.id}}</p>
-          <p style="width: 33vw">{{user.name}}</p>
-          <p style="margin-left">{{user.mac}}</p>
+          <p style="width: 7vw; font-weight: bold">{{user.id}}</p>
+          <p style="width: 25vw">{{user.name}}</p>
+          <p style="width: 10vw">{{user.mac}}</p>
+          <p v-if="user.isActive">{{user.isActive}}</p>
+          <p v-else>{{new Date(user.lastMessage).toLocaleString()}}</p><br>
         </router-link>
       </div>
       <router-view></router-view>
@@ -51,6 +59,20 @@ export default {
 
 <style>
 
+  .user-header {
+    background-color: #483a7a;
+    border-top: 1px black solid;
+    padding: 1em;
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    display: flex;
+  }
+
+  .user-header p {
+    color: #FFF;
+  }
+
   .user-list {
     color: #101080;
     border-top: 1px black solid;
@@ -63,6 +85,7 @@ export default {
   .user-list a {
     color: black;
     text-decoration: none;
+    font-size: 14px;
   }
 
   .user-list:hover {

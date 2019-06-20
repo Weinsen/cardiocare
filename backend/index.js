@@ -11,6 +11,7 @@ var server = null;
 
 var lastMessages = ['', '', '', '', '', '', '', '', '', ''];
 var userDicionary = {};
+var activeUsers = {};
 
 // var routes = require('./src/routes')(app);
 
@@ -24,7 +25,7 @@ let db = new sqlite3.Database('./db/teste.db', (err) => {
 });
 
 db.serialize(() => {
-  db.run("CREATE TABLE IF NOT EXISTS users (name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, date NUMERIC NOT NULL, mac TEXT UNIQUE NOT NULL, bio TEXT, isactive NUMERIC, temp_min NUMERIC, temp_max NUMERIC, freq_min NUMERIC, freq_max NUMERIC)");
+  db.run("CREATE TABLE IF NOT EXISTS users (name TEXT UNIQUE NOT NULL, email TEXT UNIQUE NOT NULL, date NUMERIC NOT NULL, mac TEXT UNIQUE NOT NULL, bio TEXT, isactive NUMERIC, temp_min NUMERIC, temp_max NUMERIC, freq_min NUMERIC, freq_max NUMERIC, lastMessage INTEGER)");
 
   var datasql = [];
   userDicionary = {};
@@ -32,16 +33,12 @@ db.serialize(() => {
     datasql.push(row);
     userDicionary[row.mac] = row;
   }, function () {
-    console.log(userDicionary);
+    // console.log(userDicionary);
   });
 });
 
-// db.close((err) => {
-//   if (err) {
-//     console.error(err.message);
-//   }
-//   console.log('Close the database connection.');
-// });
+
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -64,10 +61,14 @@ app.get('/getUsers', function(req, res) {
     var datasql = [];
     db.each("SELECT *, ROWID as id FROM users", function(err, row) {
       datasql.push(row);
+      if (activeUsers.hasOwnProperty(row.mac)) {
+        row.isActive = activeUsers[row.mac].isActive
+      }
       userDicionary[row.mac.toString()] = row;
+
     }, function () {
       res.json({'users': datasql}).status(200);
-      console.log(userDicionary);
+      // console.log(userDicionary);
     });
   });
 });
@@ -110,14 +111,15 @@ app.get('/getImage/:id', function(req, res) {
 app.post('/newUser', function(req, res) {
 	var data = req.body.user;
   data.isactive = true;
-  data.temp_min = 30;
-  data.temp_max = 40;
-  data.freq_max = 200;
-  data.freq_min = 30;
+  data.temp_min = 35;
+  data.temp_max = 38;
+  data.freq_max = 120;
+  data.freq_min = 75;
+  data.lastMessage = new Date();
 
   var params =[ data.name, data.email, data.date, data.mac, data.bio, data.isactive,
-                data.temp_min, data.temp_max, data.freq_min, data.freq_max];
-	var sql ='INSERT INTO users (name, email, date, mac, bio, isactive, temp_min, temp_max, freq_min, freq_max) VALUES (?,?,?,?,?,?,?,?,?,?)';
+                data.temp_min, data.temp_max, data.freq_min, data.freq_max, data.lastMessage];
+	var sql ='INSERT INTO users (name, email, date, mac, bio, isactive, temp_min, temp_max, freq_min, freq_max, lastMessage) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
   db.run(sql, params, function (err, result) {
     if (err){
       console.log(err)
@@ -215,7 +217,7 @@ mqttClient.on('message', function (topic, message) {
 
   if (topic[0] === 'runner') {
     if (topic[1] === 'info') {
-      if (topic[2]) {
+      if (topic[2] && userDicionary[topic[2]]) {
         io.emit('user', topic[2] + ':' + message.toString());
         console.log(topic[2] + ':' + message.toString())
 
@@ -227,6 +229,12 @@ mqttClient.on('message', function (topic, message) {
         if (stats[0] > userDicionary[topic[2]].temp_max || stats[0] < userDicionary[topic[2]].temp_min) {
           mqttClient.publish('runner/cmd', topic[2] + ';T')
         }
+        var date = new Date().toLocaleString();
+        userDicionary[topic[2]].lastMessage = date;
+
+        activeUsers[topic[2]] = { isActive: 'Ativo', timeout: 15 }
+
+        fs.appendFileSync('db/' + topic[2] + '.log', date.toLocaleString() + ' ' + message.toString() + '\r\n');
       }
     }
   }
@@ -243,3 +251,21 @@ mqttClient.on('message', function (topic, message) {
   // client.end()
 });
 
+var checkUserTimeout = function () {
+  for (var keys in Object.keys(activeUsers)) {
+    var key = Object.keys(activeUsers)[keys]
+    if (activeUsers[key].timeout > 0) {
+      activeUsers[key].timeout -= 1
+    }
+    if (activeUsers[key].timeout <= 0) {
+      delete activeUsers[key]
+      console.log(key + ': timeout')
+      var date = new Date();
+      var params =[date, key];
+      var sql = 'UPDATE users SET lastMessage = ? WHERE mac = ?;';
+      db.run(sql, params, function () {});
+    }
+  }
+  setTimeout(checkUserTimeout, 1000)
+}
+setTimeout(checkUserTimeout, 1000)

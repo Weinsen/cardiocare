@@ -11,7 +11,8 @@
           <h2>Dados</h2>
           <p>Temperatura: {{stats.temp.now}}</p>
           <p>Frequencia: {{stats.freq.now}}</p>
-          <p>Medições: {{stats.acq}}</p><br>
+          <p>Medições: {{stats.acq}}</p>
+          <p>Última: {{new Date(user.lastMessage).toLocaleString()}}</p><br>
         </div>
         <div class="card">
           <h2>Estatística</h2>
@@ -23,13 +24,13 @@
               <th>Max</th>
             </tr>
             <tr>
-              <td>Temperatura</td>
+              <td>Temp</td>
               <td>{{stats.temp.min}}</td>
               <td>{{stats.temp.avg}}</td>
               <td>{{stats.temp.max}}</td>
             </tr>
             <tr>
-              <td>Batimentos</td>
+              <td>Freq</td>
               <td>{{stats.freq.min}}</td>
               <td>{{stats.freq.avg}}</td>
               <td>{{stats.freq.max}}</td>
@@ -285,6 +286,7 @@ export default {
       this.datasetF[3].data.push(this.user.freq_min)
       this.labels.push(this.stats.acq)
       this.stats.acq += 1
+      this.user.lastMessage = new Date()
     }
   },
   created () {

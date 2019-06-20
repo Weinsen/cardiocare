@@ -43,7 +43,7 @@ while [ 1 ]; do
 	FREQ=$(echo $MSG | cut -d ';' -f3)
 	AMB=$(echo $MSG | cut -d ';' -f4)
 
-	printf "\033[1;91mMQTT\033[0m->\033[1;93mHTTP\033[0m: MAC: %s - Temp: %5.2f - Freq: %5.2f - TAmb: %5.2f\n" $MAC $TEMP $FREQ $AMB
+	printf "\033[1;7;91mMQTT->\033[1;7;93mHTTP:\033[0m MAC: %s - Temp: %5.2f - Freq: %5.2f - TAmb: %5.2f\n" $MAC $TEMP $FREQ $AMB
 
 	mosquitto_pub -t "runner/info/${MAC}" -m "${TEMP}:${AMB}:${FREQ}"
 	# mosquitto_pub -t "runner/freq/${MAC}" -m "${FREQ}"
