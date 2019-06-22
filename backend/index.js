@@ -223,12 +223,12 @@ mqttClient.on('message', function (topic, message) {
 
         var stats = message.toString().split(':');
 
-        if (stats[2] > userDicionary[topic[2]].freq_max || stats[2] < userDicionary[topic[2]].freq_min) {
-          mqttClient.publish('runner/cmd', topic[2] + ';F')
-        }
-        if (stats[0] > userDicionary[topic[2]].temp_max || stats[0] < userDicionary[topic[2]].temp_min) {
-          mqttClient.publish('runner/cmd', topic[2] + ';T')
-        }
+        // if (stats[2] > userDicionary[topic[2]].freq_max || stats[2] < userDicionary[topic[2]].freq_min) {
+        //   mqttClient.publish('runner/cmd', topic[2] + ';F')
+        // }
+        // if (stats[0] > userDicionary[topic[2]].temp_max || stats[0] < userDicionary[topic[2]].temp_min) {
+        //   mqttClient.publish('runner/cmd', topic[2] + ';T')
+        // }
         var date = new Date().toLocaleString();
         userDicionary[topic[2]].lastMessage = date;
 

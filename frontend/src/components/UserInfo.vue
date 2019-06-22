@@ -8,34 +8,43 @@
           <p>{{user.bio}}</p>
         </div>
         <div class="card">
-          <h2>Dados</h2>
-          <p>Temperatura: {{stats.temp.now}}</p>
-          <p>Frequencia: {{stats.freq.now}}</p>
-          <p>Medições: {{stats.acq}}</p>
-          <p>Última: {{new Date(user.lastMessage).toLocaleString()}}</p><br>
-        </div>
-        <div class="card">
-          <h2>Estatística</h2>
+          <h2>Estatísticas</h2>
           <table style="width: 100%">
             <tr>
               <th></th>
+              <th>Atual</th>
               <th>Min</th>
               <th>Avg</th>
               <th>Max</th>
             </tr>
             <tr>
-              <td>Temp</td>
-              <td>{{stats.temp.min}}</td>
-              <td>{{stats.temp.avg}}</td>
-              <td>{{stats.temp.max}}</td>
+              <td style="font-weight: bold">{{stats.temp.name}}</td>
+              <td>{{stats.temp.now}}</td>
+              <td style="font-size: 0.75em">{{stats.temp.min}}</td>
+              <td style="font-size: 0.75em">{{stats.temp.avg}}</td>
+              <td style="font-size: 0.75em">{{stats.temp.max}}</td>
             </tr>
             <tr>
-              <td>Freq</td>
-              <td>{{stats.freq.min}}</td>
-              <td>{{stats.freq.avg}}</td>
-              <td>{{stats.freq.max}}</td>
+              <td style="font-weight: bold">{{stats.freq.name}}</td>
+              <td>{{stats.freq.now}}</td>
+              <td style="font-size: 0.75em">{{stats.freq.min}}</td>
+              <td style="font-size: 0.75em">{{stats.freq.avg}}</td>
+              <td style="font-size: 0.75em">{{stats.freq.max}}</td>
             </tr>
           </table>
+          <br>
+          <p><b>Medições:</b> {{stats.acq}}</p>
+          <p><b>Última:</b> {{new Date(user.lastMessage).toLocaleString()}}</p><br>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Notificações</h2>
+        <div style="display: flex; flex-direction: row">
+
+        </div>
+        <div style="display: flex; flex-direction: row">
+          <button class="notify-btn" type="button" v-on:click="alertUser">Alerta</button>
+          <button class="clear-btn" type="button" v-on:click="clearAlerts">Limpar</button>
         </div>
       </div>
       <div class="card">
@@ -60,7 +69,6 @@
           </table>
           <div style="display: flex; flex-direction: row">
             <button class="save-btn" type="submit">Salvar Configurações</button>
-            <button class="notify-btn" type="button" v-on:click="alertUser">Notificar Usuário</button>
           </div>
         </form>
       </div>
@@ -81,12 +89,14 @@ export default {
       user: {},
       stats: {
         temp: {
+          name: 'Temp',
           min: 0,
           avg: 0,
           max: 0,
           now: 0
         },
         freq: {
+          name: 'Freq',
           min: 0,
           avg: 0,
           max: 0,
@@ -94,6 +104,7 @@ export default {
         },
         acq: 0
       },
+      alerts: {},
       photo: '',
       labels: [],
       datasetT: [{
@@ -228,6 +239,23 @@ export default {
         }
       })
     },
+    clearAlerts: function () {
+      HTTP.post('/alertUser', {
+        message: {
+          cmd: 'B',
+          mac: this.user.mac
+        }
+      }).then(response => {
+        if (response.status === 200) {
+          this.$notify({
+            group: 'foo',
+            title: 'Sucesso!',
+            type: 'success',
+            text: 'Notificações retiradas!'
+          })
+        }
+      })
+    },
     checkForm: function (e) {
       e.preventDefault()
       HTTP.post('/updateUser', {
@@ -243,24 +271,41 @@ export default {
         }
       })
     },
-    getStats: function (dataset) {
-      var stat = {
-        max: 0,
-        min: 0,
-        avg: 0
-      }
+    getStats: function (dataset, stat) {
+      stat.avg = 0
+      var last = dataset.data.length - 1
       for (var i in dataset.data) {
         stat.avg += parseFloat(dataset.data[i])
-        if (dataset.data[i] > stat.max) {
-          stat.max = parseFloat(dataset.data[i]).toFixed(2)
-        } else if (dataset.data[i] < stat.min || stat.min === 0) {
-          stat.min = parseFloat(dataset.data[i]).toFixed(2)
-        }
+      }
+
+      if (parseFloat(dataset.data[last]) > stat.max) {
+        stat.max = parseFloat(dataset.data[last]).toFixed(2)
+      } else if (parseFloat(dataset.data[last]) < stat.min || stat.min === 0) {
+        stat.min = parseFloat(dataset.data[last]).toFixed(2)
       }
       stat.avg /= dataset.data.length
       stat.avg = stat.avg.toFixed(2)
-      stat.now = parseFloat(dataset.data[dataset.data.length - 1]).toFixed(2)
+      stat.now = parseFloat(dataset.data[last]).toFixed(2)
       return stat
+    },
+    notifyLimit: function () {
+      if (parseFloat(this.stats.temp.now) > parseFloat(this.user.temp_max) || parseFloat(this.stats.temp.now) < parseFloat(this.user.temp_min)) {
+        this.$notify({
+          group: 'foo',
+          title: 'Alerta!',
+          type: 'error',
+          text: 'Temperatura fora do limite!'
+        })
+      }
+
+      if (parseFloat(this.stats.freq.now) > parseFloat(this.user.freq_max) || parseFloat(this.stats.freq.now) < parseFloat(this.user.freq_min)) {
+        this.$notify({
+          group: 'foo',
+          title: 'Alerta!',
+          type: 'error',
+          text: 'Batimentos fora do limite!'
+        })
+      }
     },
     updateData: function (pack) {
       var i = 0
@@ -279,14 +324,16 @@ export default {
       this.datasetT[2].data.push(this.user.temp_max)
       this.datasetT[3].data.push(this.user.temp_min)
       this.datasetF[0].data.push(pack[3])
-      this.stats.freq = this.getStats(this.datasetF[0])
-      this.stats.temp = this.getStats(this.datasetT[0])
+      this.stats.freq = this.getStats(this.datasetF[0], this.stats.freq)
+      this.stats.temp = this.getStats(this.datasetT[0], this.stats.temp)
       this.datasetF[1].data.push(this.stats.freq.avg)
       this.datasetF[2].data.push(this.user.freq_max)
       this.datasetF[3].data.push(this.user.freq_min)
-      this.labels.push(this.stats.acq)
+      // this.labels.push(this.stats.acq)
+      this.labels.push('')
       this.stats.acq += 1
       this.user.lastMessage = new Date()
+      this.notifyLimit()
     }
   },
   created () {
@@ -324,6 +371,10 @@ export default {
 
   .notify-btn {
     background-color: #AF4C50;
+  }
+
+  .clear-btn {
+    background-color: #5050AF;
   }
 
   .user-bio {

@@ -8,8 +8,8 @@ $ npm i --save
 
 #RUN
 ```
-$ cd ../frontend
-$ run npm dev &
+$ cd frontend
+$ npm run dev
 $ cd backend
 $ node index.js
 ```

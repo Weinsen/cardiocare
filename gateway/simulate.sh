@@ -7,6 +7,6 @@ else
 fi
 
 while [ 1 ]; do
-	echo "$MAC;$(shuf -i 35-37 -n 1);$(shuf -i 90-110 -n 1);$(shuf -i 24-26 -n 1)" > ACM;
+	echo "$MAC;$(shuf -i 35-40 -n 1);$(shuf -i 90-110 -n 1);$(shuf -i 24-26 -n 1)" > ACM;
 	sleep 1;
 done

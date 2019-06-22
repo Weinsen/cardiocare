@@ -5,7 +5,7 @@
       <div class="user-header">
         <p style="width: 7vw; font-weight: bold">ID</p>
         <p style="width: 25vw">Usuário</p>
-        <p style="width: 10vw">MAC</p>
+        <p style="width: 20vw">MAC</p>
         <p>Último acesso</p><br>
       </div>
       <div style="overflow: auto;" v-for="(user, index) in users" v-bind:key="index" class="user-list">
@@ -13,7 +13,7 @@
           <!-- <div><img v-bind:src="image" id="profile-icon"></div> -->
           <p style="width: 7vw; font-weight: bold">{{user.id}}</p>
           <p style="width: 25vw">{{user.name}}</p>
-          <p style="width: 10vw">{{user.mac}}</p>
+          <p style="width: 20vw">{{user.mac}}</p>
           <p v-if="user.isActive">{{user.isActive}}</p>
           <p v-else>{{new Date(user.lastMessage).toLocaleString()}}</p><br>
         </router-link>

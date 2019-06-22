@@ -4,7 +4,7 @@
     <router-view/>
 
     <notifications group="foo"
-                   position="bottom left"
+                   position="top left"
                    :speed="500" />
   </div>
 </template>
